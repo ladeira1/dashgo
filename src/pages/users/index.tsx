@@ -76,7 +76,7 @@ export default function UserList() {
                         size="sm" 
                         fontSize="sm" 
                         colorScheme="whiteAlpha" 
-                        leftIcon={isScreenMedium && <Icon as={RiPencilLine} />}
+                        leftIcon={isScreenSmall && <Icon as={RiPencilLine} />}
                       >
                         {isScreenMedium ? 'Editar' : <Icon as={RiPencilLine} />}
                       </Button>
