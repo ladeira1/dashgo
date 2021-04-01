@@ -11,7 +11,8 @@ import {
   Text,
   Th,
   Thead,
-  Tr 
+  Tr, 
+  useBreakpointValue
 } from '@chakra-ui/react'
 import { RiAddLine, RiPencilLine } from 'react-icons/ri'
 import { Header } from '../../components/Header'
@@ -19,6 +20,9 @@ import { Pagination } from '../../components/Pagination'
 import { Sidebar } from '../../components/Sidebar'
 
 export default function UserList() {
+  const isScreenMedium = useBreakpointValue({ base: false, md: true })
+  const isScreenSmall = useBreakpointValue({ base: true, sm: false })
+
   return (
     <Box>
       <Header />
@@ -43,37 +47,42 @@ export default function UserList() {
           <Table colorScheme="whiteAlpha">
             <Thead>
               <Tr>
-                <Th px="6" color="gray.300" width="8">
+                <Th px={["1", "4", "6"]} color="gray.300" width="8">
                   <Checkbox colorScheme="pink" />
                 </Th>
                 <Th>Usuário</Th>
-                <Th>Data de cadastro</Th>
+                {isScreenMedium && <Th>Data de cadastro</Th>}
                 <Th width="8" />
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
-                <Td px="6">
+                <Td px={["1", "4", "6"]}>
                   <Checkbox colorScheme="pink" />
                 </Td>
                 <Td>
                   <Box>
                     <Text fontWeight="bold">Joao Ladeira</Text>
-                    <Text fontSize="sm" color="gray.300">joaoladeirag@gmail.com</Text>
+                    <Text fontSize={["smaller", "sm"]} color="gray.300">joaoladeirag@gmail.com</Text>
                   </Box>
                 </Td>
-                <Td>31 de Março de 2021</Td>
-                <Td>
-                  <Button 
-                    as="a" 
-                    size="sm" 
-                    fontSize="sm" 
-                    colorScheme="whiteAlpha" 
-                    leftIcon={<Icon as={RiPencilLine} />}
-                  >
-                    Editar
-                  </Button>
-                </Td>
+                {isScreenMedium && <Td>31 de Março de 2021</Td>}
+                {isScreenSmall ? 
+                  (<Td></Td>) 
+                  : (
+                    <Td display={isScreenSmall && 'none'}>
+                      <Button 
+                        as="a" 
+                        size="sm" 
+                        fontSize="sm" 
+                        colorScheme="whiteAlpha" 
+                        leftIcon={isScreenMedium && <Icon as={RiPencilLine} />}
+                      >
+                        {isScreenMedium ? 'Editar' : <Icon as={RiPencilLine} />}
+                      </Button>
+                    </Td>
+                  )
+                }
               </Tr>
             </Tbody>
           </Table>
