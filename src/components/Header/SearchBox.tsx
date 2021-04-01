@@ -1,7 +1,14 @@
 import { Flex, Input, Icon } from "@chakra-ui/react";
+import { ChangeEvent, useRef, useState } from "react";
 import { RiSearchLine } from "react-icons/ri";
 
 export function Searchbox() {
+  const [search, setSearch] = useState('')
+
+  function handleUpdateSearchValue(event: ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value)
+  }
+
   return (
     <Flex
       as="label"
@@ -23,6 +30,8 @@ export function Searchbox() {
         _placeholder={{ color: 'gray.400' }} 
         px="4" 
         mr="4" 
+        value={search}
+        onChange={handleUpdateSearchValue}
       />
       <Icon as={RiSearchLine} fontSize="20" />
     </Flex>
