@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Link from 'next/link'
 import { 
   Box,
@@ -16,12 +17,10 @@ import {
   Tr, 
   useBreakpointValue
 } from '@chakra-ui/react'
-import { useQuery } from 'react-query'
 import { RiAddLine, RiPencilLine } from 'react-icons/ri'
 import { Header } from '../../components/Header'
 import { Pagination } from '../../components/Pagination'
 import { Sidebar } from '../../components/Sidebar'
-import { api } from '../../services/api'
 import { useUsers } from '../../hooks/useUsers'
 
 interface User {
@@ -32,7 +31,9 @@ interface User {
 }
 
 export default function UserList() {
-  const { data, isLoading, isFetching, error } = useUsers()
+  const [page, setPage] = useState(1)
+
+  const { data, isLoading, isFetching, error } = useUsers(page)
 
   const isScreenMedium = useBreakpointValue({ base: false, md: true })
   const isScreenSmall = useBreakpointValue({ base: true, sm: false })
@@ -82,8 +83,8 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.map((user: User) => (
-                    <Tr>
+                  {data.users.map((user: User) => (
+                    <Tr key={user.id}>
                       <Td px={["1", "4", "6"]}>
                         <Checkbox colorScheme="pink" />
                       </Td>
@@ -114,7 +115,11 @@ export default function UserList() {
                   ))}
                 </Tbody>
               </Table>
-              <Pagination />
+              <Pagination 
+                totalQuantityOfRegisters={data.totalCount}
+                currentPage={page}
+                onPageChange={setPage}
+              />
             </>
           )}
         </Box>
