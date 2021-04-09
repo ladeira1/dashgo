@@ -14,13 +14,13 @@ export function makeServer() {
     },
     factories: { 
       user: Factory.extend({
-        name() { return faker.name.firstName() },
+        name() { return faker.name.findName() },
         email() { return faker.internet.email().toLowerCase() },
         createdAt() { return faker.date.recent(10) },
       })
     },
     seeds(server) {
-      server.createList('user', 200)
+      server.createList('user', 10)
     },
     routes() {
       this.namespace = 'api'
