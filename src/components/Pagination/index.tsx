@@ -1,4 +1,6 @@
 import { Box, Stack, Text } from "@chakra-ui/layout";
+import { GetServerSideProps } from "next";
+import { getUsers } from "../../hooks/useUsers";
 import { PaginationItem } from "./PaginationItem";
 
 
@@ -23,7 +25,7 @@ export function Pagination({
   currentPage = 1, 
   onPageChange
 }: PaginationProps) {
-  const lastPage = Math.floor(totalQuantityOfRegisters / registersPerPage)
+  const lastPage = Math.ceil(totalQuantityOfRegisters / registersPerPage)
   const previousPages = currentPage > 1 ? generatePagesArray(
     currentPage - 1 - siblingsCount,
     currentPage - 1

@@ -1,4 +1,4 @@
-import { createServer, Factory, Model, Response } from 'miragejs'
+import { createServer, Factory, Model, Response, ActiveModelSerializer } from 'miragejs'
 import faker from 'faker'
 
 interface User {
@@ -9,6 +9,9 @@ interface User {
 
 export function makeServer() {
   const server = createServer({
+    serializers: {
+      application: ActiveModelSerializer,
+    },
     models: {
       user: Model.extend<Partial<User>>({})
     },
@@ -20,7 +23,7 @@ export function makeServer() {
       })
     },
     seeds(server) {
-      server.createList('user', 198)
+      server.createList('user', 11)
     },
     routes() {
       this.namespace = 'api'
@@ -31,7 +34,9 @@ export function makeServer() {
         const pageStart = (Number(page) - 1) * Number(per_page)
         const pageEnd = pageStart + Number(per_page)
         const total = schema.all('user').length
-        const users = this.serialize(schema.all('user')).users.slice(pageStart, pageEnd)
+        const users = this.serialize(schema.all('user'))
+          .users.slice(pageStart, pageEnd)
+          
 
         return new Response(
           200,
